@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">מייל חשבונית מס</string>
+    <string name="search_hint">חיפוש איש קשר</string>
+    <string name="add_contact">הוסף איש קשר</string>
+    <string name="contact_name">שם</string>
+    <string name="contact_email">אימייל</string>
+    <string name="save">שמור</string>
+    <string name="cancel">ביטול</string>
+    <string name="take_photo">צלם מסמך</string>
+    <string name="send_email">שלח במייל</string>
+    <string name="email_subject">חשבונית מס קבלה</string>
+    <string name="email_body">חשבונית מס קבלה מוצמדת למייל כאן</string>
+    <string name="no_contact_selected">בחר איש קשר לפני השליחה</string>
+    <string name="no_pdf_yet">צלם מסמך לפני השליחה</string>
+    <string name="permission_camera_denied">יש לאשר גישה למצלמה כדי לצלם מסמך</string>
+    <string name="photo_capture_cancelled">הצילום בוטל</string>
+    <string name="retake_photo">צלם שוב</string>
+    <string name="preparing_pdf">מכין PDF לשליחה…</string>
+    <string name="back">חזרה</string>
+    <string name="photo_preview_desc">תצוגה מקדימה של הצילום</string>
+    <string name="email_send_failed">לא נמצאה אפליקציית מייל מתאימה</string>
+</resources>
