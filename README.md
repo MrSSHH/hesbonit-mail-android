@@ -5,10 +5,15 @@ A lightweight, native Android app built with Kotlin and Jetpack Compose for scan
 ---
 
 ## App Screenshots
+
 <p align="center">
-  <img src="assets/contact-list.jpeg" width="32%" alt="Contact List Screen" />
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/document-preview.jpeg" width="32%" alt="Document Capture & Preview Screen" />
+  <img src="assets/contact-list.jpeg" width="22%" alt="Contact List Screen" />
+  &nbsp;&nbsp;
+  <img src="assets/add-contact.jpeg" width="22%" alt="Adding a contact to the list" />
+  &nbsp;&nbsp;
+  <img src="assets/document-preview.jpeg" width="22%" alt="Document Capture & Preview Screen" />
+  &nbsp;&nbsp;
+  <img src="assets/reciept-example.jpeg" width="22%" alt="Receipt preview" />
 </p>
 
 ---
