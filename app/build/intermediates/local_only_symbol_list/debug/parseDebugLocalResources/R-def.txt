@@ -1,0 +1,30 @@
+R_DEF: Internal format may change without notice
+local
+color ic_launcher_background
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable ic_launcher_monochrome
+mipmap ic_launcher
+mipmap ic_launcher_round
+string add_contact
+string app_name
+string back
+string cancel
+string contact_email
+string contact_name
+string email_body
+string email_send_failed
+string email_subject
+string no_contact_selected
+string no_pdf_yet
+string permission_camera_denied
+string photo_capture_cancelled
+string photo_preview_desc
+string preparing_pdf
+string retake_photo
+string save
+string search_hint
+string send_email
+string take_photo
+style Theme.HesbonitMail
+xml file_paths

@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.invoicemail.hesbonit.app-debug-46:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.invoicemail.hesbonit.app-main-48:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.invoicemail.hesbonit.app-debug-46:/xml_file_paths.xml.flat",
+        "source": "com.invoicemail.hesbonit.app-main-48:/xml/file_paths.xml"
+    },
+    {
+        "merged": "com.invoicemail.hesbonit.app-debug-46:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.invoicemail.hesbonit.app-main-48:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.invoicemail.hesbonit.app-debug-46:/drawable_ic_launcher_monochrome.xml.flat",
+        "source": "com.invoicemail.hesbonit.app-main-48:/drawable/ic_launcher_monochrome.xml"
+    },
+    {
+        "merged": "com.invoicemail.hesbonit.app-debug-46:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.invoicemail.hesbonit.app-main-48:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.invoicemail.hesbonit.app-debug-46:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.invoicemail.hesbonit.app-main-48:/drawable/ic_launcher_background.xml"
+    }
+]
