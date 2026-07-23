@@ -39,18 +39,19 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-
+	buildTypes {
+		release {
+			isMinifyEnabled = true
+			proguardFiles(
+				getDefaultProguardFile("proguard-android-optimize.txt"),
+				"proguard-rules.pro"
+			)
+			// Safely sign with debug key ONLY if the keystore file actually exists on the machine
+			signingConfig = signingConfigs.findByName("debug")?.takeIf { 
+				it.storeFile?.exists() == true 
+			}
+		}
+	}
     buildFeatures {
         compose = true
     }
