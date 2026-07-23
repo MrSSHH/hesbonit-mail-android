@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.invoicemail.hesbonit.ContactViewModelTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-07-23T09:30:39" hostname="BENM-LP" time="0.287">
+  <properties/>
+  <testcase name="onQueryChange filters contacts by name substring" classname="com.invoicemail.hesbonit.ContactViewModelTest" time="0.234"/>
+  <testcase name="deleteContact removes contact and clears selection if it was selected" classname="com.invoicemail.hesbonit.ContactViewModelTest" time="0.011"/>
+  <testcase name="addContact with blank name does not insert" classname="com.invoicemail.hesbonit.ContactViewModelTest" time="0.01"/>
+  <testcase name="addContact with blank email does not insert" classname="com.invoicemail.hesbonit.ContactViewModelTest" time="0.009"/>
+  <testcase name="selectContact updates selectedContact state" classname="com.invoicemail.hesbonit.ContactViewModelTest" time="0.007"/>
+  <testcase name="deleteContact does not clear selection of a different contact" classname="com.invoicemail.hesbonit.ContactViewModelTest" time="0.007"/>
+  <testcase name="addContact inserts contact and appears in list" classname="com.invoicemail.hesbonit.ContactViewModelTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
