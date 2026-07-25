@@ -1,4 +1,4 @@
-package com.invoicemail.hesbonit
+﻿package com.invoicemail.hesbonit
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -20,50 +20,68 @@ object PdfUtils {
     private const val A4_HEIGHT_POINTS = 842
     private const val MARGIN_POINTS = 24
 
-    fun createPdfFromImage(context: Context, imageFile: File): File {
-        var bitmap = decodeSampledBitmap(imageFile, reqWidth = 2000, reqHeight = 2000)
-        bitmap = rotateBitmapIfNeeded(imageFile, bitmap)
+    /**
+     * Combines one or more photos into a single multi-page A4 PDF, one page per image,
+     * in the order provided.
+     */
+    fun createPdfFromImages(context: Context, imageFiles: List<File>): File {
+        require(imageFiles.isNotEmpty()) { "׳™׳© ׳׳¦׳׳ ׳׳₪׳—׳•׳× ׳¢׳׳•׳“ ׳׳—׳“" }
 
         val pdfDocument = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(A4_WIDTH_POINTS, A4_HEIGHT_POINTS, 1).create()
-        val page = pdfDocument.startPage(pageInfo)
-        val canvas: Canvas = page.canvas
 
-        canvas.drawColor(Color.WHITE)
+        imageFiles.forEachIndexed { index, imageFile ->
+            var bitmap = decodeSampledBitmap(imageFile, reqWidth = 2000, reqHeight = 2000)
+            bitmap = rotateBitmapIfNeeded(imageFile, bitmap)
 
-        val maxWidth = A4_WIDTH_POINTS - (MARGIN_POINTS * 2)
-        val maxHeight = A4_HEIGHT_POINTS - (MARGIN_POINTS * 2)
+            val pageInfo = PdfDocument.PageInfo
+                .Builder(A4_WIDTH_POINTS, A4_HEIGHT_POINTS, index + 1)
+                .create()
+            val page = pdfDocument.startPage(pageInfo)
+            val canvas: Canvas = page.canvas
 
-        val bitmapRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
-        val boxRatio = maxWidth.toFloat() / maxHeight.toFloat()
+            canvas.drawColor(Color.WHITE)
 
-        val drawWidth: Int
-        val drawHeight: Int
-        if (bitmapRatio > boxRatio) {
-            drawWidth = maxWidth
-            drawHeight = (maxWidth / bitmapRatio).toInt()
-        } else {
-            drawHeight = maxHeight
-            drawWidth = (maxHeight * bitmapRatio).toInt()
+            val maxWidth = A4_WIDTH_POINTS - (MARGIN_POINTS * 2)
+            val maxHeight = A4_HEIGHT_POINTS - (MARGIN_POINTS * 2)
+
+            val bitmapRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+            val boxRatio = maxWidth.toFloat() / maxHeight.toFloat()
+
+            val drawWidth: Int
+            val drawHeight: Int
+            if (bitmapRatio > boxRatio) {
+                drawWidth = maxWidth
+                drawHeight = (maxWidth / bitmapRatio).toInt()
+            } else {
+                drawHeight = maxHeight
+                drawWidth = (maxHeight * bitmapRatio).toInt()
+            }
+
+            val left = (A4_WIDTH_POINTS - drawWidth) / 2
+            val top = (A4_HEIGHT_POINTS - drawHeight) / 2
+            val destRect = Rect(left, top, left + drawWidth, top + drawHeight)
+
+            val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+            canvas.drawBitmap(bitmap, null, destRect, paint)
+
+            pdfDocument.finishPage(page)
+            bitmap.recycle()
         }
 
-        val left = (A4_WIDTH_POINTS - drawWidth) / 2
-        val top = (A4_HEIGHT_POINTS - drawHeight) / 2
-        val destRect = Rect(left, top, left + drawWidth, top + drawHeight)
-
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
-        canvas.drawBitmap(bitmap, null, destRect, paint)
-
-        pdfDocument.finishPage(page)
-
         val pdfDir = File(context.cacheDir, "pdfs").apply { if (!exists()) mkdirs() }
-        val pdfFile = File(pdfDir, "invoice_${System.currentTimeMillis()}.pdf")
+        val pdfFile = File(pdfDir, "invoice_.pdf")
         FileOutputStream(pdfFile).use { out -> pdfDocument.writeTo(out) }
         pdfDocument.close()
-        bitmap.recycle()
 
         return pdfFile
     }
+
+    /**
+     * Backward-compatible single-image entry point. Delegates to [createPdfFromImages]
+     * so callers/tests that only deal with one photo keep working unchanged.
+     */
+    fun createPdfFromImage(context: Context, imageFile: File): File =
+        createPdfFromImages(context, listOf(imageFile))
 
     fun decodePreviewBitmap(imageFile: File, reqSize: Int = 800): Bitmap {
         val bitmap = decodeSampledBitmap(imageFile, reqSize, reqSize)

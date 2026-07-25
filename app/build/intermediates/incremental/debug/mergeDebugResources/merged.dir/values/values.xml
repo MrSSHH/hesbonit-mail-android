@@ -98,6 +98,7 @@
     <item name="wrapped_composition_tag" type="id"/>
     <integer name="status_bar_notification_info_maxnum">999</integer>
     <string name="add_contact">הוסף איש קשר</string>
+    <string name="add_page">הוסף עמוד נוסף</string>
     <string name="androidx_startup" translatable="false">androidx.startup</string>
     <string name="app_name">מייל חשבונית מס</string>
     <string name="back">חזרה</string>
@@ -187,12 +188,14 @@
     <string name="not_selected">Not selected</string>
     <string name="off">Off</string>
     <string name="on">On</string>
+    <string name="page_number_desc">עמוד %1$d</string>
     <string name="permission_camera_denied">יש לאשר גישה למצלמה כדי לצלם מסמך</string>
     <string name="photo_capture_cancelled">הצילום בוטל</string>
     <string name="photo_preview_desc">תצוגה מקדימה של הצילום</string>
     <string name="preparing_pdf">מכין PDF לשליחה…</string>
     <string name="range_end">"Range end"</string>
     <string name="range_start">"Range start"</string>
+    <string name="remove_page_desc">הסר עמוד</string>
     <string name="retake_photo">צלם שוב</string>
     <string name="save">שמור</string>
     <string name="search_hint">חיפוש איש קשר</string>

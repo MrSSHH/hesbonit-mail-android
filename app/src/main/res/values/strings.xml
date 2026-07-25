@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">מייל חשבונית מס</string>
     <string name="search_hint">חיפוש איש קשר</string>
@@ -20,4 +20,7 @@
     <string name="back">חזרה</string>
     <string name="photo_preview_desc">תצוגה מקדימה של הצילום</string>
     <string name="email_send_failed">לא נמצאה אפליקציית מייל מתאימה</string>
+    <string name="add_page">הוסף עמוד נוסף</string>
+    <string name="remove_page_desc">הסר עמוד</string>
+    <string name="page_number_desc">עמוד %1$d</string>
 </resources>

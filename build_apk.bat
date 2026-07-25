@@ -1,15 +1,11 @@
 @echo off
-set "psfile=%temp%\build_android_%random%.ps1"
-more +7 "%~f0" > "%psfile%"
-powershell -NoProfile -ExecutionPolicy Bypass -File "%psfile%"
-del "%psfile%"
-pause
-exit /b
+:: =========================================================================
+:: HIGH-SPEED AUTOMATED TOOL INSTALLER & GRADLE BUILD SCRIPT
+:: =========================================================================
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$s=[System.IO.File]::ReadAllText('%~f0'); Invoke-Expression $s.Substring($s.IndexOf('#PS_' + 'START'))"
+exit /b %ERRORLEVEL%
 
-# =========================================================================
-# HIGH-SPEED AUTOMATED TOOL INSTALLER & GRADLE BUILD SCRIPT
-# =========================================================================
-
+#PS_START
 $ProgressPreference = 'SilentlyContinue'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -35,13 +31,15 @@ if (Test-Path ".gitignore") {
     }
 }
 
-# 0b. Auto-create or fix gradle.properties for AndroidX & UTF-8
-if (-not (Test-Path "gradle.properties")) {
-    Set-Content -Path "gradle.properties" -Value "android.useAndroidX=true`norg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8" -Encoding ascii
+# 0b. Auto-create or fix gradle.properties
+$gpPath = "$ProjectRoot\gradle.properties"
+$gpContent = "android.useAndroidX=true`norg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8"
+if (-not (Test-Path $gpPath)) {
+    [System.IO.File]::WriteAllText($gpPath, $gpContent)
 } else {
-    $gp = Get-Content "gradle.properties" -Raw
+    $gp = Get-Content $gpPath -Raw
     if ($gp -notmatch "android.useAndroidX=true") {
-        Add-Content "gradle.properties" "`nandroid.useAndroidX=true`norg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8"
+        Add-Content $gpPath "`n$gpContent"
     }
 }
 
@@ -107,18 +105,22 @@ if (-not (Test-Path $SdkManager)) {
 
 # 4. Configure local.properties
 $EscapedSdkPath = $SdkDir.Replace("\", "\\")
-"sdk.dir=$EscapedSdkPath" | Out-File -FilePath "$ProjectRoot\local.properties" -Encoding ascii
+[System.IO.File]::WriteAllText("$ProjectRoot\local.properties", "sdk.dir=$EscapedSdkPath")
 
-# 5. Accept Android Licenses & Install Android SDK 34
-Write-Host "`n[4/6] Accepting Android SDK Licenses..." -ForegroundColor Cyan
-cmd.exe /c "set JAVA_HOME=$JdkDir&& echo y | `"$SdkManager`" --licenses" | Out-Null
+# 5. Pre-accept Android Licenses directly on disk
+Write-Host "`n[4/6] Pre-accepting Android SDK Licenses..." -ForegroundColor Cyan
+$LicensesDir = "$SdkDir\licenses"
+New-Item -ItemType Directory -Path $LicensesDir -Force | Out-Null
+[System.IO.File]::WriteAllText("$LicensesDir\android-sdk-license", "`n89339ba1755934688242868438d119ad78e47319`nd56f518e8030a300085a80d45d8122393325010b`n24333f8a63718c309afe8d847f00351287710e6f")
+[System.IO.File]::WriteAllText("$LicensesDir\android-sdk-preview-license", "`n84831b9409646a918e30573bab4c9c91346d8abd")
 
+# 6. Install Android SDK Components (Output visible)
 Write-Host "[5/6] Installing Android Platform 34 & Build Tools..." -ForegroundColor Cyan
-cmd.exe /c "set JAVA_HOME=$JdkDir&& `"$SdkManager`" `"platforms;android-34`" `"build-tools;34.0.0`" `"platform-tools`"" | Out-Null
+& "$SdkManager" "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 
-# 6. Build Debug APK
+# 7. Build Debug APK
 Write-Host "`n[6/6] Compiling and Building Android APK..." -ForegroundColor Cyan
-cmd.exe /c "set JAVA_HOME=$JdkDir&& `"$GradleDir\bin\gradle.bat`" assembleDebug"
+& "$GradleDir\bin\gradle.bat" assembleDebug
 
 $ApkPath = "$ProjectRoot\app\build\outputs\apk\debug\app-debug.apk"
 if (Test-Path $ApkPath) {

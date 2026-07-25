@@ -7,6 +7,7 @@ drawable ic_launcher_monochrome
 mipmap ic_launcher
 mipmap ic_launcher_round
 string add_contact
+string add_page
 string app_name
 string back
 string cancel
@@ -17,10 +18,12 @@ string email_send_failed
 string email_subject
 string no_contact_selected
 string no_pdf_yet
+string page_number_desc
 string permission_camera_denied
 string photo_capture_cancelled
 string photo_preview_desc
 string preparing_pdf
+string remove_page_desc
 string retake_photo
 string save
 string search_hint

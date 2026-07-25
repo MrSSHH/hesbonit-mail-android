@@ -2,7 +2,6 @@
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,8 +27,7 @@ fun AppRoot(contactViewModel: ContactViewModel) {
     var screen by remember { mutableStateOf(Screen.ContactList) }
     val selectedContact by contactViewModel.selectedContact.collectAsState()
 
-    var photoFile by remember { mutableStateOf<File?>(null) }
-    var previewBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var pages by remember { mutableStateOf<List<CapturedPage>>(emptyList()) }
     var isProcessing by remember { mutableStateOf(false) }
 
     var pendingPhotoFile by remember { mutableStateOf<File?>(null) }
@@ -38,14 +36,13 @@ fun AppRoot(contactViewModel: ContactViewModel) {
     val takePictureLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { success ->
-        val fileToProcess = pendingPhotoFile
-        if (success && fileToProcess != null) {
-            photoFile = fileToProcess
-            previewBitmap = try {
-                PdfUtils.decodePreviewBitmap(fileToProcess)
+        val currentPendingFile = pendingPhotoFile
+        if (success && currentPendingFile != null) {
+            try {
+                val preview = PdfUtils.decodePreviewBitmap(currentPendingFile)
+                pages = pages + CapturedPage(currentPendingFile, preview)
             } catch (e: Exception) {
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-                null
             }
         } else {
             Toast.makeText(context, context.getString(R.string.photo_capture_cancelled), Toast.LENGTH_SHORT).show()
@@ -87,8 +84,7 @@ fun AppRoot(contactViewModel: ContactViewModel) {
             ContactListScreen(
                 viewModel = contactViewModel,
                 onContactChosen = {
-                    photoFile = null
-                    previewBitmap = null
+                    pages = emptyList()
                     screen = Screen.Document
                 }
             )
@@ -101,21 +97,22 @@ fun AppRoot(contactViewModel: ContactViewModel) {
             } else {
                 DocumentScreen(
                     contact = contact,
-                    previewBitmap = previewBitmap,
+                    pages = pages,
                     isProcessing = isProcessing,
                     onBack = { screen = Screen.ContactList },
                     onTakePhoto = { launchCamera() },
+                    onRemovePage = { page -> pages = pages.filterNot { it.file == page.file } },
                     onSend = {
-                        val currentPhoto = photoFile
-                        if (currentPhoto == null) {
+                        if (pages.isEmpty()) {
                             Toast.makeText(context, context.getString(R.string.no_pdf_yet), Toast.LENGTH_SHORT).show()
                             return@DocumentScreen
                         }
                         isProcessing = true
                         coroutineScope.launch {
                             try {
+                                val imageFiles = pages.map { it.file }
                                 val pdfFile = withContext(Dispatchers.IO) {
-                                    PdfUtils.createPdfFromImage(context, currentPhoto)
+                                    PdfUtils.createPdfFromImages(context, imageFiles)
                                 }
                                 EmailUtils.sendPdfViaGmail(context, pdfFile, contact.email)
                             } catch (e: Exception) {

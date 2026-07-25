@@ -169,6 +169,7 @@ layout notification_template_part_time
 mipmap ic_launcher
 mipmap ic_launcher_round
 string add_contact
+string add_page
 string androidx_startup
 string app_name
 string back
@@ -254,12 +255,14 @@ string no_pdf_yet
 string not_selected
 string off
 string on
+string page_number_desc
 string permission_camera_denied
 string photo_capture_cancelled
 string photo_preview_desc
 string preparing_pdf
 string range_end
 string range_start
+string remove_page_desc
 string retake_photo
 string save
 string search_hint
